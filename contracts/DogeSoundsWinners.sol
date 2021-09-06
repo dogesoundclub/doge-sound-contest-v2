@@ -7,6 +7,8 @@ import "./klaytn-contracts/token/KIP17/KIP17Pausable.sol";
 
 contract DogeSoundsWinners is KIP17Full("DogeSoundClub DogeSounds Winners", "DSWINNERS"), KIP17Mintable, KIP17Burnable, KIP17Pausable {
 
+    mapping(uint256 => string) public dogeSounds;
+
     function tokenURI(uint256 tokenId) public view returns (string memory) {
         require(_exists(tokenId), "KIP17Metadata: URI query for nonexistent token");
         
@@ -32,5 +34,10 @@ contract DogeSoundsWinners is KIP17Full("DogeSoundClub DogeSounds Winners", "DSW
         idstr = string(buffer);
 
         return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, idstr)) : "";
+    }
+    
+    function mint(address to, uint256 tokenId, string memory dogeSound) public onlyMinter returns (bool) {
+        dogeSounds[tokenId] = dogeSound;
+        return mint(to, tokenId);
     }
 }

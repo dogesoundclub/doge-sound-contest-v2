@@ -169,9 +169,11 @@ describe("DogeSoundContestV2", () => {
             await mine(200);
             expect(await contest.elected(0)).to.be.equal(1)
 
-            await expect(contest.mintDogeSound(0)).not.to.reverted;
-            await expect(contest.mintDogeSound(0)).to.reverted;
-            await expect(contest.mintDogeSound(1)).to.reverted;
+            await expect(contest.mintWinnerNFT(0)).not.to.reverted;
+            await expect(contest.mintWinnerNFT(0)).to.reverted;
+            await expect(contest.mintWinnerNFT(1)).to.reverted;
+
+            expect(await winners.dogeSounds(0)).to.be.equal("최고야!")
         })
 
         it("vote2", async () => {
@@ -234,9 +236,11 @@ describe("DogeSoundContestV2", () => {
             await mine(200);
             expect(await contest.elected(0)).to.be.equal(3)
 
-            await expect(contest.connect(other).mintDogeSound(0)).not.to.reverted;
-            await expect(contest.connect(other).mintDogeSound(0)).to.reverted;
-            await expect(contest.connect(other).mintDogeSound(1)).to.reverted;
+            await expect(contest.connect(other).mintWinnerNFT(0)).not.to.reverted;
+            await expect(contest.connect(other).mintWinnerNFT(0)).to.reverted;
+            await expect(contest.connect(other).mintWinnerNFT(1)).to.reverted;
+            
+            expect(await winners.dogeSounds(0)).to.be.equal("고맙습니다.")
         })
     })
 })

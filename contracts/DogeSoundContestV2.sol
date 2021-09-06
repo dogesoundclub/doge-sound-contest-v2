@@ -1,10 +1,10 @@
 pragma solidity ^0.5.6;
 
 import "./klaytn-contracts/token/KIP17/IKIP17Enumerable.sol";
-import "./klaytn-contracts/token/KIP17/KIP17Mintable.sol";
 import "./klaytn-contracts/ownership/Ownable.sol";
 import "./klaytn-contracts/math/SafeMath.sol";
 import "./interfaces/IDogeSoundContestV2.sol";
+import "./DogeSoundsWinners.sol";
 
 contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
     using SafeMath for uint256;
@@ -15,7 +15,7 @@ contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
     uint8 public constant REGISTER_CANDIDATE_PERIOD = 1;
     uint8 public constant VOTE_PERIOD = 2;
 
-    KIP17Mintable public dogeSounds;
+    DogeSoundsWinners public winnerNFT;
     mapping(address => bool) public matesAllowed;
 
     function allowMates(address mates) onlyOwner external {
@@ -42,9 +42,9 @@ contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
     mapping(uint256 => mapping(uint256 => uint256)) public votes;
     mapping(uint256 => mapping(address => mapping(uint256 => bool))) public mateVoted;
 
-    constructor(uint256 _checkpoint, KIP17Mintable _dogeSounds) public {
+    constructor(uint256 _checkpoint, DogeSoundsWinners _winnerNFT) public {
         checkpoint = _checkpoint;
-        dogeSounds = _dogeSounds;
+        winnerNFT = _winnerNFT;
     }
 
     function candidateCount(uint256 r) view external returns (uint256) {
@@ -173,9 +173,10 @@ contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
         return electedCandidate;
     }
     
-    function mintDogeSound(uint256 r) external returns (uint256) {
-        require(candidateRegister[r][elected(r)] == msg.sender);
-        dogeSounds.mint(msg.sender, r);
+    function mintWinnerNFT(uint256 r) external returns (uint256) {
+        uint256 index = elected(r);
+        require(candidateRegister[r][index] == msg.sender);
+        winnerNFT.mint(msg.sender, r, candidates[r][index]);
         return r;
     }
 }

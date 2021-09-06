@@ -29,5 +29,5 @@ interface IDogeSoundContestV2 {
     function vote(uint256 _candidate, address mates, uint256[] calldata mateIds) external;
     function elected(uint256 r) view external returns (uint256);
 
-    function mintDogeSound(uint256 r) external returns (uint256);
+    function mintWinnerNFT(uint256 r) external returns (uint256);
 }
