@@ -161,6 +161,7 @@ describe("DogeSoundContestV2", () => {
             await network.provider.send("evm_setAutomine", [true]);
 
             await contest.vote(2, mates1.address, [10, 11, 12, 13, 14]);
+            await expect(contest.vote(2, mates1.address, [10, 11, 12, 13, 14])).to.reverted;;
             await contest.connect(other).vote(1, mates1.address, [20, 21, 22, 23, 24]);
             expect(await contest.elected(0)).to.be.equal(1)
             expect(await contest.totalVotes(0)).to.be.equal(25)
@@ -239,7 +240,7 @@ describe("DogeSoundContestV2", () => {
             await expect(contest.connect(other).mintWinnerNFT(0)).not.to.reverted;
             await expect(contest.connect(other).mintWinnerNFT(0)).to.reverted;
             await expect(contest.connect(other).mintWinnerNFT(1)).to.reverted;
-            
+
             expect(await winners.dogeSounds(0)).to.be.equal("고맙습니다.")
         })
     })
