@@ -25,7 +25,7 @@ interface IDogeSoundContestV2 {
     function period() view external returns (uint8);
     function remains() view external returns (uint256);
     
-    function registerCandidate(string calldata slogan, address mates, uint256[] calldata mateIds) external;
+    function registerCandidate(string calldata dogeSound, address mates, uint256[] calldata mateIds) external;
     function vote(uint256 _candidate, address mates, uint256[] calldata mateIds) external;
     function elected(uint256 r) view external returns (uint256);
 

@@ -2,8 +2,8 @@ import { expect } from "chai";
 import { ethers, network, waffle } from "hardhat";
 import DogeSoundClubMateArtifact from "../artifacts/contracts/DogeSoundClubMate.sol/DogeSoundClubMate.json";
 import DogeSoundContestV2Artifact from "../artifacts/contracts/DogeSoundContestV2.sol/DogeSoundContestV2.json";
-import DogeSoundsWinnersArtifact from "../artifacts/contracts/DogeSoundsWinners.sol/DogeSoundsWinners.json";
-import { DogeSoundsWinners } from "../typechain";
+import DogeSoundWinnersArtifact from "../artifacts/contracts/DogeSoundWinners.sol/DogeSoundWinners.json";
+import { DogeSoundWinners } from "../typechain";
 import { DogeSoundClubMate } from "../typechain/DogeSoundClubMate";
 import { DogeSoundContestV2 } from "../typechain/DogeSoundContestV2";
 
@@ -19,7 +19,7 @@ async function mine(count = 1): Promise<void> {
 describe("DogeSoundContestV2", () => {
     let mates1: DogeSoundClubMate;
     let mates2: DogeSoundClubMate;
-    let winners: DogeSoundsWinners;
+    let winners: DogeSoundWinners;
     let contest: DogeSoundContestV2;
 
     const provider = waffle.provider;
@@ -41,9 +41,9 @@ describe("DogeSoundContestV2", () => {
 
         winners = await deployContract(
             admin,
-            DogeSoundsWinnersArtifact,
+            DogeSoundWinnersArtifact,
             []
-        ) as DogeSoundsWinners;
+        ) as DogeSoundWinners;
 
         contest = await deployContract(
             admin,

@@ -4,7 +4,7 @@ import "./klaytn-contracts/token/KIP17/IKIP17Enumerable.sol";
 import "./klaytn-contracts/ownership/Ownable.sol";
 import "./klaytn-contracts/math/SafeMath.sol";
 import "./interfaces/IDogeSoundContestV2.sol";
-import "./DogeSoundsWinners.sol";
+import "./DogeSoundWinners.sol";
 
 contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
     using SafeMath for uint256;
@@ -15,7 +15,7 @@ contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
     uint8 public constant REGISTER_CANDIDATE_PERIOD = 1;
     uint8 public constant VOTE_PERIOD = 2;
 
-    DogeSoundsWinners public winnerNFT;
+    DogeSoundWinners public winnerNFT;
     mapping(address => bool) public matesAllowed;
 
     function allowMates(address mates) onlyOwner external {
@@ -42,7 +42,7 @@ contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
     mapping(uint256 => mapping(uint256 => uint256)) public votes;
     mapping(uint256 => mapping(address => mapping(uint256 => bool))) public mateVoted;
 
-    constructor(uint256 _checkpoint, DogeSoundsWinners _winnerNFT) public {
+    constructor(uint256 _checkpoint, DogeSoundWinners _winnerNFT) public {
         checkpoint = _checkpoint;
         winnerNFT = _winnerNFT;
     }
@@ -127,7 +127,7 @@ contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
         }
     }
 
-    function registerCandidate(string calldata slogan, address mates, uint256[] calldata mateIds) external {
+    function registerCandidate(string calldata dogeSound, address mates, uint256[] calldata mateIds) external {
         uint256 count = mateIds.length;
         require(period() == REGISTER_CANDIDATE_PERIOD && count >= candidateMateCount);
 
@@ -136,7 +136,7 @@ contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
 
         uint256 _candidate = candidates[r].length;
         candidateRegister[r][_candidate] = msg.sender;
-        candidates[r].push(slogan);
+        candidates[r].push(dogeSound);
         totalVotes[r] = totalVotes[r].add(count);
         userVotes[r][msg.sender] = userVotes[r][msg.sender].add(count);
         votes[r][_candidate] = count;

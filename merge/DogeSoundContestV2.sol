@@ -336,7 +336,7 @@ interface IDogeSoundContestV2 {
     function period() view external returns (uint8);
     function remains() view external returns (uint256);
     
-    function registerCandidate(string calldata slogan, address mates, uint256[] calldata mateIds) external;
+    function registerCandidate(string calldata dogeSound, address mates, uint256[] calldata mateIds) external;
     function vote(uint256 _candidate, address mates, uint256[] calldata mateIds) external;
     function elected(uint256 r) view external returns (uint256);
 
@@ -1403,7 +1403,7 @@ contract KIP17Pausable is KIP13, KIP17, Pausable {
     }
 }
 
-contract DogeSoundsWinners is KIP17Full("DogeSoundClub DogeSounds Winners", "DSWINNERS"), KIP17Mintable, KIP17Burnable, KIP17Pausable {
+contract DogeSoundWinners is KIP17Full("DSC DogeSound Winners", "DSW"), KIP17Mintable, KIP17Burnable, KIP17Pausable {
 
     mapping(uint256 => string) public dogeSounds;
 
@@ -1411,10 +1411,10 @@ contract DogeSoundsWinners is KIP17Full("DogeSoundClub DogeSounds Winners", "DSW
         require(_exists(tokenId), "KIP17Metadata: URI query for nonexistent token");
         
         if (tokenId == 0) {
-            return "https://api.dogesound.club/dogesoundswinners/0";
+            return "https://api.dogesound.club/dogesoundwinners/0";
         }
 
-        string memory baseURI = "https://api.dogesound.club/dogesoundswinners/";
+        string memory baseURI = "https://api.dogesound.club/dogesoundwinners/";
         string memory idstr;
         
         uint256 temp = tokenId;
@@ -1449,7 +1449,7 @@ contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
     uint8 public constant REGISTER_CANDIDATE_PERIOD = 1;
     uint8 public constant VOTE_PERIOD = 2;
 
-    DogeSoundsWinners public winnerNFT;
+    DogeSoundWinners public winnerNFT;
     mapping(address => bool) public matesAllowed;
 
     function allowMates(address mates) onlyOwner external {
@@ -1476,7 +1476,7 @@ contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
     mapping(uint256 => mapping(uint256 => uint256)) public votes;
     mapping(uint256 => mapping(address => mapping(uint256 => bool))) public mateVoted;
 
-    constructor(uint256 _checkpoint, DogeSoundsWinners _winnerNFT) public {
+    constructor(uint256 _checkpoint, DogeSoundWinners _winnerNFT) public {
         checkpoint = _checkpoint;
         winnerNFT = _winnerNFT;
     }
@@ -1561,7 +1561,7 @@ contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
         }
     }
 
-    function registerCandidate(string calldata slogan, address mates, uint256[] calldata mateIds) external {
+    function registerCandidate(string calldata dogeSound, address mates, uint256[] calldata mateIds) external {
         uint256 count = mateIds.length;
         require(period() == REGISTER_CANDIDATE_PERIOD && count >= candidateMateCount);
 
@@ -1570,7 +1570,7 @@ contract DogeSoundContestV2 is Ownable, IDogeSoundContestV2 {
 
         uint256 _candidate = candidates[r].length;
         candidateRegister[r][_candidate] = msg.sender;
-        candidates[r].push(slogan);
+        candidates[r].push(dogeSound);
         totalVotes[r] = totalVotes[r].add(count);
         userVotes[r][msg.sender] = userVotes[r][msg.sender].add(count);
         votes[r][_candidate] = count;

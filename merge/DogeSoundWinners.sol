@@ -1297,7 +1297,7 @@ contract KIP17Pausable is KIP13, KIP17, Pausable {
     }
 }
 
-contract DogeSoundsWinners is KIP17Full("DogeSoundClub DogeSounds Winners", "DSWINNERS"), KIP17Mintable, KIP17Burnable, KIP17Pausable {
+contract DogeSoundWinners is KIP17Full("DSC DogeSound Winners", "DSW"), KIP17Mintable, KIP17Burnable, KIP17Pausable {
 
     mapping(uint256 => string) public dogeSounds;
 
@@ -1305,10 +1305,10 @@ contract DogeSoundsWinners is KIP17Full("DogeSoundClub DogeSounds Winners", "DSW
         require(_exists(tokenId), "KIP17Metadata: URI query for nonexistent token");
         
         if (tokenId == 0) {
-            return "https://api.dogesound.club/dogesoundswinners/0";
+            return "https://api.dogesound.club/dogesoundwinners/0";
         }
 
-        string memory baseURI = "https://api.dogesound.club/dogesoundswinners/";
+        string memory baseURI = "https://api.dogesound.club/dogesoundwinners/";
         string memory idstr;
         
         uint256 temp = tokenId;
